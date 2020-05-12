@@ -1,0 +1,35 @@
+#!/usr/bin/env ash
+EXEC_ID=$(uuidgen)
+ALREADY_RUNNING=$(pgrep -f /usr/sbin/cron-tick-execute > /dev/null 2> /dev/null || "YES")
+
+if [ "$ALREADY_RUNNING" == "YES" ]
+then
+  echo "The last execution is still running. Skipping this one..."
+  exit 0
+fi
+
+echo "====== Execution started ($(date), $EXEC_ID) ======="
+
+OUTPUT=$(time -f "TIME_OUTPUT|%x|%e" /usr/sbin/cron-tick 2>&1)
+
+TICK_EXIT_CODE=$(echo "$OUTPUT" | grep "TIME_OUTPUT" | cut -d'|' -f2 | tr -d '[:space:]')
+TICK_DURATION=$(echo "$OUTPUT" | grep "TIME_OUTPUT" | cut -d'|' -f3 | tr -d '[:space:]')
+
+echo "Script exit code: $TICK_EXIT_CODE, execution duration: $TICK_DURATION seconds"
+
+if [ "$PUSH_GATEWAY_URL" == "" ]
+then
+  echo "PUSH_GATEWAY_URL variable not set, skipping pushing metrics to push gateway."
+else
+  echo "Pushing metrics to $PUSH_GATEWAY_URL"
+
+cat <<EOF | curl -s --data-binary @- "$PUSH_GATEWAY_URL"
+  # TYPE exit_code gauge
+  exit_code $TICK_EXIT_CODE
+  # TYPE duration_seconds gauge
+  duration_seconds $TICK_DURATION
+EOF
+
+fi
+
+echo "====== Execution finished ($(date), $EXEC_ID) ======="

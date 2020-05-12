@@ -1,6 +1,15 @@
 version: "3.7"
 services:
-  $$IMAGE_NAME$$:
+  cron:
     build: .
-    image: homecentr/$$IMAGE_NAME$$
-    restart: unless-stopped
+    image: homecentr/cron-base:local
+    environment:
+      CRON_SCHEDULE: "* * * * *"
+      PUSH_GATEWAY_URL: "http://push_gateway:9091/metrics/job/cron/instance/base"
+    volumes:
+      - ./example/cron-tick:/cron-tick
+      #- ./example/cron-tick-fail:/cron-tick
+  push_gateway:
+    image: prom/pushgateway
+    ports:
+      - 9091:9091
