@@ -11,7 +11,8 @@ RUN rm /etc/crontabs/root && \
         # Required to push metrics to push gateway
         curl=7.67.0-r0 \
         # Required for UUID generation
-        util-linux=2.34-r1
+        util-linux=2.34-r1 && \
+    chmod a+x /usr/sbin/cron-tick-execute    
 
 # Copy s6 configuration and scripts
 COPY ./fs/ /
