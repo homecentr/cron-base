@@ -55,7 +55,7 @@ public class ContainerController {
         GenericContainer result = new GenericContainer<>(dockerImageTag)
                 .withNetwork(_network)
                 .withEnv(envVars)
-                .withFileSystemBind(Paths.get(System.getProperty("user.dir"), "..", "example", getTickScriptFileName(tickScript)).normalize().toString(), "/cron-tick")
+                .withFileSystemBind(Paths.get(System.getProperty("user.dir"), "..", "example", getTickScriptDirectory(tickScript)).normalize().toString(), "/config")
                 .waitingFor(Wait.forLogMessage(".*\\[services\\.d\\] done.*", 1));
 
         result.start();
@@ -76,9 +76,9 @@ public class ContainerController {
         return result;
     }
 
-    private String getTickScriptFileName(TickScript script) {
+    private String getTickScriptDirectory(TickScript script) {
         return script == TickScript.Success
-                ? "cron-tick"
-                : "cron-tick-fail";
+                ? "success"
+                : "failure";
     }
 }
