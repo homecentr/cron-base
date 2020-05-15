@@ -22,6 +22,7 @@ jobs:
         uses: codfish/semantic-release-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_URL: "https://api.github.com"
 
       - name: Verify Dockerfile with Hadolint
         uses: brpaz/hadolint-action@master

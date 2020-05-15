@@ -1,4 +1,4 @@
-FROM homecentr/base:2.1.0-alpine
+FROM homecentr/base:2.2.0-alpine
 
 ENV CRON_SCHEDULE=""
 ENV PUSH_GATEWAY_URL=""
