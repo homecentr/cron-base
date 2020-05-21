@@ -7,8 +7,8 @@ services:
       CRON_SCHEDULE: "* * * * *"
       PUSH_GATEWAY_URL: "http://push_gateway:9091/metrics/job/cron/instance/base"
     volumes:
-      - ./example/cron-tick:/cron-tick
-      #- ./example/cron-tick-fail:/cron-tick
+      - ./example/cron-tick:/config/cron-tick
+      #- ./example/cron-tick-fail:/config/cron-tick
   push_gateway:
     image: prom/pushgateway
     ports:

@@ -1,29 +1,37 @@
+import helpers.CronDockerTagResolver;
+import io.homecentr.testcontainers.containers.GenericContainerEx;
+import io.homecentr.testcontainers.containers.wait.strategy.WaitEx;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.HashMap;
+import java.nio.file.Paths;
+import java.time.Duration;
+
+import static io.homecentr.testcontainers.WaitLoop.waitFor;
 
 public class CronWithoutApiGatewayShould {
-    private static final ContainerController _controller = new ContainerController();
+    private static GenericContainerEx _cronContainer;
 
     @BeforeClass
     public static void before() {
-        HashMap<String, String> envVars = new HashMap<>();
-        envVars.put("CRON_SCHEDULE", "* * * * *");
-        envVars.put("PUSH_GATEWAY_URL", "http://push_gateway:9091/metrics/job/cron/instance/base");
+        _cronContainer = new GenericContainerEx<>(new CronDockerTagResolver())
+                .withEnv("CRON_SCHEDULE", "* * * * *")
+                .withEnv("PUSH_GATEWAY_URL", "http://push_gateway:9091/metrics/job/cron/instance/base")
+                .withRelativeFileSystemBind(Paths.get("..", "example", "success").toString(), "/config")
+                .waitingFor(WaitEx.forS6OverlayStart());
 
-        _controller.startCron(TickScript.Success, envVars);
+        _cronContainer.start();
     }
 
     @AfterClass
     public static void after() {
-        _controller.cleanUp();
+        _cronContainer.close();
     }
 
     @Test
     public void executeNextTickScript() throws Exception {
-        Helpers.waitForMessageInStdOut(_controller.getCronContainer(), "Execution finished", 80);
-        Helpers.waitForMessageInStdOut(_controller.getCronContainer(), "Execution started", 80, 2);
+        waitFor(Duration.ofSeconds(80), () -> _cronContainer.getLogsAnalyzer().contains("Execution finished"));
+        waitFor(Duration.ofSeconds(80), () -> _cronContainer.getLogsAnalyzer().contains("Execution started", 2));
     }
 }
