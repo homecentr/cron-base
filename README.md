@@ -24,7 +24,7 @@ services:
       CRON_SCHEDULE: "* * * * *" # Run script every minute
       PUSH_GATEWAY_URL: "http://push_gateway:9091/metrics/job/cron/label-name/label-value"
     volumes:
-      - ./example/success:/config # must contain cron-tick script
+      - ./example/success:/cron # must contain cron-tick script
 ```
 
 ## Environment variables
@@ -44,7 +44,7 @@ The image does not expose any ports.
 
 | Container path | Description |
 |-------------|----------------|
-| /config | Directory containing the script which should be executed, the script must be named `cron-tick`. |
+| /cron | Directory containing the script which should be executed, the script must be named `cron-tick`. |
 
 ## Security
 The container is regularly scanned for vulnerabilities and updated. Further info can be found in the [Security tab](https://github.com/homecentr/docker-cron-base/security).

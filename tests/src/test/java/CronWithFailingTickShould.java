@@ -28,7 +28,7 @@ public class CronWithFailingTickShould {
                 .withNetwork(_network)
                 .withEnv("CRON_SCHEDULE", "* * * * *")
                 .withEnv("PUSH_GATEWAY_URL", "http://push_gateway:9091/metrics/job/cron/instance/base")
-                .withRelativeFileSystemBind(Paths.get("..", "example", "failure").toString(), "/config")
+                .withRelativeFileSystemBind(Paths.get("..", "example", "failure").toString(), "/cron")
                 .waitingFor(WaitEx.forS6OverlayStart());
 
         _pushGatewayContainer = PushGatewayContainerFactory.create(_network);
