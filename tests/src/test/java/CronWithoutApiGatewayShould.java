@@ -18,7 +18,7 @@ public class CronWithoutApiGatewayShould {
         _cronContainer = new GenericContainerEx<>(new CronDockerTagResolver())
                 .withEnv("CRON_SCHEDULE", "* * * * *")
                 .withEnv("PUSH_GATEWAY_URL", "http://push_gateway:9091/metrics/job/cron/instance/base")
-                .withRelativeFileSystemBind(Paths.get("..", "example", "success").toString(), "/config")
+                .withRelativeFileSystemBind(Paths.get("..", "example", "success").toString(), "/cron")
                 .waitingFor(WaitEx.forS6OverlayStart());
 
         _cronContainer.start();
