@@ -1,6 +1,5 @@
 #!/usr/bin/with-contenv sh
 
 # crond must be ALWAYS started as root (requires setpgid)
-# exec s6-setuidgid "$PUID:$PGID" crond -f -d 2
 
 exec crond -f -l 2

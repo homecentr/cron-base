@@ -1,5 +1,6 @@
 #!/usr/bin/env ash
 
 sleep 2
-
+echo "STD OUTPUT"
+>&2 echo "ERROR OUTPUT"
 exit 10

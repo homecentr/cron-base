@@ -1,4 +1,6 @@
 #!/usr/bin/env ash
 
+echo "STD OUTPUT"
+>&2 echo "ERROR OUTPUT"
 
 mktemp -d

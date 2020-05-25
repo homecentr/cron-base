@@ -21,7 +21,7 @@ public class CronWithFailingTickShould {
     private static Network _network;
 
     @BeforeClass
-    public static void before() {
+    public static void before() throws Exception {
         _network = Network.newNetwork();
 
         _cronContainer = new GenericContainerEx<>(new CronDockerTagResolver())
@@ -35,6 +35,8 @@ public class CronWithFailingTickShould {
 
         _pushGatewayContainer.start();
         _cronContainer.start();
+
+        waitFor(Duration.ofSeconds(80), () -> _cronContainer.getLogsAnalyzer().contains("Execution finished"));
     }
 
     @AfterClass
@@ -46,9 +48,6 @@ public class CronWithFailingTickShould {
 
     @Test
     public void executeNextTickScript() throws Exception {
-        // First tick
-        waitFor(Duration.ofSeconds(80), () -> _cronContainer.getLogsAnalyzer().contains("Execution finished"));
-
         // Second tick
         waitFor(Duration.ofSeconds(80), () -> _cronContainer.getLogsAnalyzer().contains("Execution finished", 2));
     }
@@ -59,5 +58,25 @@ public class CronWithFailingTickShould {
 
         assertTrue(response.getResponseContent().contains("exit_code{instance=\"base\",job=\"cron\"} 10"));
         assertTrue(response.getResponseContent().contains("duration_seconds{instance=\"base\",job=\"cron\"}"));
+    }
+
+    @Test
+    public void printJobStdOutput() throws Exception {
+        waitFor(Duration.ofSeconds(10), () -> _cronContainer.getLogsAnalyzer().contains("STD OUTPUT"));
+    }
+
+    @Test
+    public void printJobErrorOutput() throws Exception {
+        waitFor(Duration.ofSeconds(10), () -> _cronContainer.getLogsAnalyzer().contains("ERROR OUTPUT"));
+    }
+
+    @Test
+    public void printExitCode() throws Exception {
+        waitFor(Duration.ofSeconds(10), () -> _cronContainer.getLogsAnalyzer().contains("Script exit code: 10"));
+    }
+
+    @Test
+    public void printDuration() throws Exception {
+        waitFor(Duration.ofSeconds(10), () -> _cronContainer.getLogsAnalyzer().contains("Duration:"));
     }
 }

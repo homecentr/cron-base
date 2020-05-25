@@ -2,3 +2,5 @@
 *.sh         eol=lf
 cron-tick-execute eol=lf
 cron-tick eol=lf
+run       eol=lf
+finish    eol=lf
