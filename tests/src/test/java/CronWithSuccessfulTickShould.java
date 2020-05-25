@@ -23,7 +23,7 @@ public class CronWithSuccessfulTickShould {
     private static Network _network;
 
     @BeforeClass
-    public static void before() {
+    public static void before() throws Exception {
         _network = Network.newNetwork();
 
         _cronContainer = new GenericContainerEx<>(new CronDockerTagResolver())
@@ -37,6 +37,8 @@ public class CronWithSuccessfulTickShould {
 
         _pushGatewayContainer.start();
         _cronContainer.start();
+
+        waitFor(Duration.ofSeconds(80), () -> _cronContainer.getLogsAnalyzer().contains("Execution finished"));
     }
 
     @AfterClass
@@ -48,8 +50,6 @@ public class CronWithSuccessfulTickShould {
 
     @Test
     public void executeCronTickScript() throws Exception {
-        waitFor(Duration.ofSeconds(80), () -> _cronContainer.getLogsAnalyzer().contains("Execution finished"));
-
         // Returns exit code 1 if the directory is empty
         Container.ExecResult execResult = _cronContainer.execInContainer("ash", "-c", "find /tmp -mindepth 1 | read");
 
@@ -62,5 +62,25 @@ public class CronWithSuccessfulTickShould {
 
         assertTrue(response.getResponseContent().contains("exit_code{instance=\"base\",job=\"cron\"} 0"));
         assertTrue(response.getResponseContent().contains("duration_seconds{instance=\"base\",job=\"cron\"}"));
+    }
+
+    @Test
+    public void printJobStdOutput() throws Exception {
+        waitFor(Duration.ofSeconds(10), () -> _cronContainer.getLogsAnalyzer().contains("STD OUTPUT"));
+    }
+
+    @Test
+    public void printJobErrorOutput() throws Exception {
+        waitFor(Duration.ofSeconds(10), () -> _cronContainer.getLogsAnalyzer().contains("ERROR OUTPUT"));
+    }
+
+    @Test
+    public void printExitCode() throws Exception {
+        waitFor(Duration.ofSeconds(10), () -> _cronContainer.getLogsAnalyzer().contains("Script exit code: 0"));
+    }
+
+    @Test
+    public void printDuration() throws Exception {
+        waitFor(Duration.ofSeconds(10), () -> _cronContainer.getLogsAnalyzer().contains("Duration:"));
     }
 }
