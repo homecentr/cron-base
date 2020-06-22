@@ -1,4 +1,4 @@
-FROM homecentr/base:2.3.0-alpine
+FROM homecentr/base:2.4.3-alpine
 
 ENV CRON_SCHEDULE=""
 ENV PUSH_GATEWAY_URL=""
@@ -9,7 +9,7 @@ COPY ./fs/ /
 RUN rm /etc/crontabs/root && \
     apk add --no-cache \
         # Required to push metrics to push gateway
-        curl=7.67.0-r0 \
+        curl=7.69.1-r0 \
         # Required for UUID generation
-        util-linux=2.34-r1 && \
+        util-linux=2.35.2-r0 && \
     chmod a+x /usr/sbin/cron-tick-execute
