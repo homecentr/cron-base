@@ -1,12 +1,9 @@
-[![Project status](https://img.shields.io/badge/Project%20status-stable%20%26%20actively%20maintaned-green.svg)](https://github.com/homecentr/docker-cron-base/graphs/commit-activity) 
-[![](https://img.shields.io/github/issues-raw/homecentr/docker-cron-base/bug?label=open%20bugs)](https://github.com/homecentr/docker-cron-base/labels/bug) 
-[![](https://images.microbadger.com/badges/version/homecentr/cron-base.svg)](https://hub.docker.com/repository/docker/homecentr/cron-base)
-[![](https://img.shields.io/docker/pulls/homecentr/cron-base.svg)](https://hub.docker.com/repository/docker/homecentr/cron-base) 
-[![](https://img.shields.io/docker/image-size/homecentr/cron-base/latest)](https://hub.docker.com/repository/docker/homecentr/cron-base)
+[![Project status](https://badgen.net/badge/project%20status/stable%20%26%20actively%20maintaned?color=green)](https://github.com/homecentr/docker-cron-base/graphs/commit-activity) [![](https://badgen.net/github/label-issues/homecentr/docker-cron-base/bug?label=open%20bugs&color=green)](https://github.com/homecentr/docker-cron-base/labels/bug) [![](https://badgen.net/github/release/homecentr/docker-cron-base)](https://hub.docker.com/repository/docker/homecentr/cron-base)
+[![](https://badgen.net/docker/pulls/homecentr/cron-base)](https://hub.docker.com/repository/docker/homecentr/cron-base) 
+[![](https://badgen.net/docker/size/homecentr/cron-base)](https://hub.docker.com/repository/docker/homecentr/cron-base)
 
 ![CI/CD on master](https://github.com/homecentr/docker-cron-base/workflows/CI/CD%20on%20master/badge.svg)
 ![Regular Docker image vulnerability scan](https://github.com/homecentr/docker-cron-base/workflows/Regular%20Docker%20image%20vulnerability%20scan/badge.svg)
-
 
 # HomeCentr - cron-base
 This docker image is used as base image for all homecentr images which require a cron scheduler but can also be used on its own. The image executes a mounted script at the specified schedule and reports the results into a Prometheus [push-gateway](https://github.com/prometheus/pushgateway) for easy monitoring and alerting.
