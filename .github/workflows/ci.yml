@@ -16,6 +16,11 @@ jobs:
       packages: read
     steps:
       - uses: actions/checkout@master
+
+      - name: Set up java for tests execution
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
       
       - name: Set tag var
         id: vars
@@ -26,7 +31,7 @@ jobs:
 
       - name: Build Docker image
         run: docker build . -t ${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.docker_tag }}
-        
+
       - name: Test Docker image
         run: cd tests && sudo gradle test --info -Ddocker_image_tag=${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.docker_tag }}
         env: # To allow downloading packages
