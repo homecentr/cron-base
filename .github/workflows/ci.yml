@@ -26,10 +26,7 @@ jobs:
 
       - name: Build Docker image
         run: docker build . -t ${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.docker_tag }}
-
-      - name: Test
-        run: "echo 'Actor: ${{ github.actor }}'"
-
+        
       - name: Test Docker image
         run: cd tests && sudo gradle test --info -Ddocker_image_tag=${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.docker_tag }}
         env: # To allow downloading packages
