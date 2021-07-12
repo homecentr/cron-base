@@ -10,9 +10,7 @@ sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
-    maven {
-        name = "GitHubPackages"
-        url = uri("https://maven.pkg.github.com/homecentr/lib-testcontainers-extensions")
+    maven("https://maven.pkg.github.com/homecentr") {
         credentials {
             username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")
             password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
