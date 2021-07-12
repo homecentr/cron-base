@@ -3,7 +3,6 @@
 [![](https://badgen.net/docker/size/homecentr/cron-base)](https://hub.docker.com/repository/docker/homecentr/cron-base)
 
 ![CI/CD on master](https://github.com/homecentr/docker-cron-base/workflows/CI/CD%20on%20master/badge.svg)
-![Regular Docker image vulnerability scan](https://github.com/homecentr/docker-cron-base/workflows/Regular%20Docker%20image%20vulnerability%20scan/badge.svg)
 
 # HomeCentr - cron-base
 This docker image is used as base image for all homecentr images which require a cron scheduler but can also be used on its own. The image executes a mounted script at the specified schedule and reports the results into a Prometheus [push-gateway](https://github.com/prometheus/pushgateway) for easy monitoring and alerting.
