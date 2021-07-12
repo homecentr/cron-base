@@ -13,8 +13,8 @@ repositories {
         name = "GitHubPackages"
         url = uri("https://maven.pkg.github.com/homecentr/lib-testcontainers-extensions")
         credentials {
-            username = project.findProperty("gpr.user") ? : System.getenv("GITHUB_USERNAME")
-            password = project.findProperty("gpr.key") ? : System.getenv("GITHUB_TOKEN")
+            username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")
+            password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
         }
     }
 }
