@@ -9,6 +9,7 @@ public class PushGatewayContainerFactory {
         GenericContainerEx result = new GenericContainerEx<>("prom/pushgateway")
                 .withNetwork(network)
                 .withNetworkAliases("push_gateway")
+                .withExposedPorts(9091)
                 .waitingFor(Wait.forLogMessage(".*listen_address=:9091.*", 1));
 
         return result;
