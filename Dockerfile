@@ -9,7 +9,7 @@ COPY ./fs/ /
 RUN rm /etc/crontabs/root && \
     apk add --no-cache \
         # Required to push metrics to push gateway
-        curl=7.77.0-r1 \
+        curl=7.78.0-r0 \
         # Required for UUID generation
         util-linux=2.37-r0 && \
     chmod a+x /usr/sbin/cron-tick-execute
